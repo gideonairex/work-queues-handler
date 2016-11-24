@@ -1,0 +1,21 @@
+language: node_js
+services:
+  - redis
+  - rabbitmq
+
+env:
+  - RABBITMQURL="localhost"
+  - REDISHOST="localhost"
+
+node_js:
+  - "6.6.0"
+
+before_install:
+  - npm install -g npm
+
+install:
+  - npm install
+
+scripts:
+  - npm run lint
+  - npm test
