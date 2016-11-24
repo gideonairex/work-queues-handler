@@ -4,8 +4,7 @@ services:
   - rabbitmq
 
 env:
-  - RABBITMQURL="amqp://localhost"
-  - REDISHOST="localhost"
+  - RABBITMQURL="amqp://localhost" REDISHOST="localhost"
 
 node_js:
   - "6"
