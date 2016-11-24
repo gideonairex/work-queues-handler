@@ -8,7 +8,7 @@ env:
   - REDISHOST="localhost"
 
 node_js:
-  - "6.6.0"
+  - "6"
 
 before_install:
   - npm install -g npm
