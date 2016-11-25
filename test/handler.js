@@ -29,7 +29,8 @@ describe( 'Handler', () => {
 		triggerCB( {
 			'properties' : {
 				'headers' : {
-					'origin' : 'parent'
+					'origin'   : ['dda-director'],
+					'callType' : 'parent'
 				}
 			},
 			'content' : new Buffer( 'test' )
@@ -60,8 +61,9 @@ describe( 'Handler', () => {
 		triggerCB( {
 			'properties' : {
 				'headers' : {
-					'origin' : 'child',
-					'child'  : 'child-queue'
+					'origin'   : ['dda-director'],
+					'callType' : 'child',
+					'child'    : 'child-queue'
 				}
 			},
 			'content' : new Buffer( 'test' )

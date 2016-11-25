@@ -3,15 +3,14 @@
 let publisher = require( '../lib/publisher' );
 
 describe( 'Publisher methods', () => {
-	it( 'it should sendtoqueueparent', ( done ) => {
+	it( 'it should sendToQueueParent', ( done ) => {
 		let channel = {
 			'sendToQueue' : function ( queue, message, options ) {
-				queue.should.equal( 'recieve-queue' );
+				queue.should.equal( 'dda-director' );
 				JSON.parse( message.toString() ).should.containEql( {
 					'body' : 'testme'
 				} );
-				options.headers.origin.should.equal( 'child' );
-				options.headers.type.should.equal( 'parallel' );
+				options.headers.method.should.equal( 'parallel' );
 				options.headers.expected.should.equal( 2 );
 				options.headers.refId.should.equal( 3 );
 				done();
@@ -22,13 +21,14 @@ describe( 'Publisher methods', () => {
 		let messenger = publishertest( {
 			'properties' : {
 				'headers' : {
-					'type'     : 'parallel',
+					'method'   : 'parallel',
 					'expected' : 2,
-					'refId'    : 3
+					'refId'    : 3,
+					'origin'   : ['dda-director']
 				}
 			}
 		} );
-		messenger.sendToQueueParent( 'recieve-queue', JSON.stringify( {
+		messenger.sendToQueueParent( JSON.stringify( {
 			'body' : 'testme'
 		} ) );
 	} );
@@ -39,8 +39,7 @@ describe( 'Publisher methods', () => {
 				JSON.parse( message.toString() ).should.containEql( {
 					'body' : 'testme'
 				} );
-				options.headers.origin.should.equal( 'parent' );
-				options.headers.type.should.equal( 'parallel' );
+				options.headers.method.should.equal( 'parallel' );
 				options.headers.expected.should.equal( 2 );
 				options.headers.refId.should.equal( 3 );
 				done();
@@ -51,9 +50,10 @@ describe( 'Publisher methods', () => {
 		let messenger = publisherTest( {
 			'properties' : {
 				'headers' : {
-					'type'     : 'parallel',
+					'method'   : 'parallel',
 					'expected' : 2,
-					'refId'    : 3
+					'refId'    : 3,
+					'origin'   : ['dda-director']
 				}
 			}
 		} );
@@ -83,7 +83,6 @@ describe( 'Publisher methods', () => {
 
 		let channel = {
 			'sendToQueue' : function ( queue, message, options ) {
-				options.headers.origin.should.equal( 'parent' );
 				options.headers.expected.should.equal( 2 );
 				++counter;
 				checkCount();
@@ -94,7 +93,7 @@ describe( 'Publisher methods', () => {
 		let messenger = publisherTest( {
 			'properties' : {
 				'headers' : {
-					'type'     : 'parallel',
+					'method'   : 'parallel',
 					'expected' : 2
 				}
 			}
@@ -104,12 +103,11 @@ describe( 'Publisher methods', () => {
 	} );
 	it( 'it should sendConfirmForParallel', ( done ) => {
 		let channel = {
-			'sendToQueue' : function ( queue, message, options ) {
+			'sendToQueue' : function ( queue, message ) {
 				queue.should.equal( 'recieve-queue' );
 				JSON.parse( message.toString() ).should.containEql( {
 					'body' : 'testme'
 				} );
-				options.headers.origin.should.equal( 'parent' );
 				done();
 			}
 		};
@@ -128,7 +126,7 @@ describe( 'Publisher methods', () => {
 		let messenger = publishertest( {
 			'properties' : {
 				'headers' : {
-					'type'     : 'parallel',
+					'method'   : 'parallel',
 					'expected' : 1,
 					'refid'    : 3
 				}
