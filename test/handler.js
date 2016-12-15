@@ -69,35 +69,4 @@ describe( 'Handler', () => {
 			'content' : new Buffer( 'test' )
 		} );
 	} );
-	it( 'it should consume default', ( done ) => {
-		let triggerCB;
-		let channel = {
-			'assertQueue' : function () {},
-			'prefetch'    : function () {},
-			'consume'     : function ( queue, cb ) {
-				triggerCB = cb;
-			}
-		};
-		let redisClient = {};
-		let worker = {
-			'config' : {
-				'consumeQueue' : 'test',
-				'queueOptions' : {}
-			},
-			'consume' : function ( message ) {
-				message.content.should.equal( 'test' );
-				done();
-			}
-		};
-
-		handler( channel, redisClient, worker );
-		triggerCB( {
-			'properties' : {
-				'headers' : {
-					'child' : 'child-queue'
-				}
-			},
-			'content' : new Buffer( 'test' )
-		} );
-	} );
 } );
